@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fetchSpaceFact } from "../services/api";
 import FactCard from "../components/FactCard";
+import Button from "../components/Button";
 
 const Home = () => {
   const [fact, setFact] = useState("");
@@ -17,7 +18,7 @@ const Home = () => {
     <div className="home">
       <h1>🚀 Space Facts Generator</h1>
 
-      <button onClick={handleClick}>Generate Fact</button>
+      <Button onClick={handleClick} disabled={loading}></Button>
 
       {loading && <p>Loading...</p>}
       {fact && <FactCard fact={fact} />}
