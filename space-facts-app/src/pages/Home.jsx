@@ -1,41 +1,55 @@
 import { useState } from "react";
 import { fetchSpaceFact } from "../services/api";
-import FactCard from "../components/FactCard";
 import Button from "../components/Button";
+import FactCard from "../components/FactCard";
 
 const Home = () => {
-  const [fact, setFact] = useState("");
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleClick = async () => {
     setLoading(true);
+    setError("");
 
     try {
-      const newFact = await fetchSpaceFact();
-      setFact(newFact);
-    } catch (error) {
-      console.error(error);
-      setFact("⚠️ Something went wrong. Try again.");
+      const result = await fetchSpaceFact();
+
+      if (!result || !result.explanation) {
+        throw new Error("Invalid data received");
+      }
+
+      setData(result);
+    } catch (err) {
+      console.error(err);
+      setError("⚠️ Failed to load space data. Please try again.");
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="home">
+    <div className="app-container">
       <h1>🚀 Space Facts Generator</h1>
 
-      {/* Button Component */}
       <Button onClick={handleClick} disabled={loading} />
 
-      {/* Empty State */}
-      {!loading && !fact && <p>Click the button to generate a space fact 🚀</p>}
+      {!loading && !data && !error && (
+        <p>Click the button to explore space 🚀</p>
+      )}
 
-      {/* Loading State */}
-      {loading && <p>Loading...</p>}
+      {loading && <p>Loading space data...</p>}
 
-      {/* Fact Display */}
-      {!loading && fact && <FactCard fact={fact} />}
+      {error && <p>{error}</p>}
+
+      {data && (
+        <FactCard
+          title={data.title}
+          explanation={data.explanation}
+          image={data.image}
+          mediaType={data.mediaType}
+        />
+      )}
     </div>
   );
 };
