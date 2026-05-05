@@ -9,8 +9,15 @@ const Home = () => {
 
   const handleClick = async () => {
     setLoading(true);
-    const newFact = await fetchSpaceFact();
-    setFact(newFact);
+
+    try {
+      const newFact = await fetchSpaceFact();
+      setFact(newFact);
+    } catch (error) {
+      console.error(error);
+      setFact("⚠️ Something went wrong. Try again.");
+    }
+
     setLoading(false);
   };
 
@@ -18,10 +25,17 @@ const Home = () => {
     <div className="home">
       <h1>🚀 Space Facts Generator</h1>
 
-      <Button onClick={handleClick} disabled={loading}></Button>
+      {/* Button Component */}
+      <Button onClick={handleClick} disabled={loading} />
 
+      {/* Empty State */}
+      {!loading && !fact && <p>Click the button to generate a space fact 🚀</p>}
+
+      {/* Loading State */}
       {loading && <p>Loading...</p>}
-      {fact && <FactCard fact={fact} />}
+
+      {/* Fact Display */}
+      {!loading && fact && <FactCard fact={fact} />}
     </div>
   );
 };
