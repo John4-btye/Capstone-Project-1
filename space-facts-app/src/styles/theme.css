@@ -1,0 +1,22 @@
+body {
+  background: radial-gradient(circle at top, #0b0c2a, #000);
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+button {
+  background: #1f3cff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.fact-card {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
