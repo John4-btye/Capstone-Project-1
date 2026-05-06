@@ -1,46 +1,49 @@
 import { useState } from "react";
-import { fetchSpaceFact } from "../services/api";
+
+import { fetchSpaceFact, searchSpaceFacts } from "../services/api";
+
 import Button from "../components/Button";
 import FactCard from "../components/FactCard";
+import SearchBar from "../components/Searchbar";
 
 const Home = () => {
   const [data, setData] = useState(null);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleClick = async () => {
     setLoading(true);
-    setError("");
 
-    try {
-      const result = await fetchSpaceFact();
+    const result = await fetchSpaceFact();
 
-      if (!result || !result.explanation) {
-        throw new Error("Invalid data received");
-      }
+    setResults([]);
+    setData(result);
 
-      setData(result);
-    } catch (err) {
-      console.error(err);
-      setError("⚠️ Failed to load space data. Please try again.");
-    }
+    setLoading(false);
+  };
+
+  const handleSearch = async (query) => {
+    setLoading(true);
+
+    const searchResults = await searchSpaceFacts(query);
+
+    setData(null);
+    setResults(searchResults);
 
     setLoading(false);
   };
 
   return (
     <div className="app-container">
-      <h1>🚀 Space Facts Generator</h1>
+      <h1>🚀 Space Explorer</h1>
 
-      <Button onClick={handleClick} disabled={loading} />
+      <SearchBar onSearch={handleSearch} />
 
-      {!loading && !data && !error && (
-        <p>Click the button to explore space 🚀</p>
-      )}
+      <div className="button-wrapper">
+        <Button onClick={handleClick} disabled={loading} />
+      </div>
 
-      {loading && <p>Loading space data...</p>}
-
-      {error && <p>{error}</p>}
+      {loading && <p className="loading">Loading space data...</p>}
 
       {data && (
         <FactCard
@@ -48,7 +51,30 @@ const Home = () => {
           explanation={data.explanation}
           image={data.image}
           mediaType={data.mediaType}
+          date={data.date}
         />
+      )}
+
+      {results.length > 0 && (
+        <div className="results-grid">
+          {results.map((item, index) => (
+            <FactCard
+              key={index}
+              title={item.title}
+              explanation={item.explanation}
+              image={item.image}
+              mediaType={item.mediaType}
+              date={item.date}
+            />
+          ))}
+        </div>
+      )}
+
+      {!loading && results.length === 0 && !data && (
+        <p className="empty-message">
+          Search for planets, nebulae, galaxies, astronauts, black holes, and
+          more.
+        </p>
       )}
     </div>
   );

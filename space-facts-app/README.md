@@ -176,3 +176,10 @@ John Ownby
 
 - NASA Open APIs
 - React documentation
+
+## New Implementations/Features
+
+- Add a search bar for specific things the user wants to find
+- Possibly add a carousel design so that the user can pick and choose what they want to read
+- Potentially add a source/references section
+- Figure out if the API KEY I am already using has more information
