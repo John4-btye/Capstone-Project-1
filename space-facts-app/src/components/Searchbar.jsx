@@ -6,21 +6,27 @@ const SearchBar = ({ onSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      return;
+    }
 
     onSearch(query);
+    setQuery("");
   };
 
   return (
     <form className="search-form" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Search space topics..."
+        placeholder="Search galaxies, nebulae, planets, black holes..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        className="search-input"
       />
 
-      <button type="submit">Search</button>
+      <button type="submit" className="search-button">
+        🔎 Search
+      </button>
     </form>
   );
 };

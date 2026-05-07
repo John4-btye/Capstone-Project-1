@@ -1,29 +1,33 @@
-const FactCard = ({ title, explanation, image, mediaType }) => {
+const FactCard = ({
+  title,
+  explanation,
+  image,
+  mediaType,
+  date,
+  copyright,
+}) => {
   return (
     <div className="fact-card">
       <h2>{title}</h2>
 
-      {mediaType === "image" && image && (
-        <img
-          src={image}
-          alt={title}
-          style={{ width: "100%", borderRadius: "10px", marginTop: "10px" }}
-        />
-      )}
+      <p className="fact-date">📅 {date}</p>
 
-      {mediaType === "video" && image && (
+      {mediaType === "image" ? (
+        <img src={image} alt={title} className="space-image" />
+      ) : (
         <iframe
-          src={image}
           title={title}
-          width="100%"
-          height="400"
-          frameBorder="0"
+          src={image}
+          className="space-video"
           allowFullScreen
-          style={{ marginTop: "10px" }}
         />
       )}
 
-      <p style={{ marginTop: "15px" }}>{explanation}</p>
+      <p className="fact-description">{explanation}</p>
+
+      <div className="credit-section">
+        <p>📸 Credit: {copyright || "NASA / Public Domain"}</p>
+      </div>
     </div>
   );
 };

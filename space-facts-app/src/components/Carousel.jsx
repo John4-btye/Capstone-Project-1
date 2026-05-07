@@ -30,17 +30,22 @@ const Carousel = ({ items }) => {
         image={currentItem.image}
         mediaType={currentItem.mediaType}
         date={currentItem.date}
+        copyright={currentItem.copyright}
       />
 
       {items.length > 1 && (
-        <div className="carousel-controls">
-          <button onClick={prevSlide}>⬅ Previous</button>
+        <div className="carousel-buttons">
+          <button onClick={prevSlide} className="carousel-btn">
+            ⬅ Previous
+          </button>
 
-          <span>
+          <span className="carousel-counter">
             {currentIndex + 1} / {items.length}
           </span>
 
-          <button onClick={nextSlide}>Next ➡</button>
+          <button onClick={nextSlide} className="carousel-btn">
+            Next ➡
+          </button>
         </div>
       )}
     </div>
