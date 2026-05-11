@@ -13,31 +13,56 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState("");
 
   const handleClick = async () => {
     setLoading(true);
+    setError("");
 
-    const result = await fetchSpaceFact();
+    try {
+      const result = await fetchSpaceFact();
 
-    setResults([]);
-    setData(result);
-    setHasSearched(false);
-    setLastQuery("");
+      if (!result) {
+        throw new Error("Empty response");
+      }
 
-    setLoading(false);
+      setResults([]);
+      setData(result);
+      setHasSearched(false);
+      setLastQuery("");
+    } catch {
+      setResults([]);
+      setData(null);
+      setHasSearched(false);
+      setLastQuery("");
+      setError(
+        "Couldn’t load a space fact right now. Check your connection/API key and try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = async (query) => {
     setLoading(true);
+    setError("");
     setHasSearched(true);
     setLastQuery(query);
 
-    const searchResults = await searchSpaceFacts(query);
+    try {
+      const searchResults = await searchSpaceFacts(query);
 
-    setData(null);
-    setResults(searchResults);
-
-    setLoading(false);
+      setData(null);
+      setResults(Array.isArray(searchResults) ? searchResults : []);
+    } catch {
+      setData(null);
+      setResults([]);
+      setError(
+        "Couldn’t load search results right now. Check your connection/API key and try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,6 +79,8 @@ const Home = () => {
 
       {loading && <p className="loading">Loading space data...</p>}
 
+      {!loading && error && <p className="error-message">{error}</p>}
+
       {data && (
         <FactCard
           title={data.title}
@@ -61,10 +88,22 @@ const Home = () => {
           image={data.image}
           mediaType={data.mediaType}
           date={data.date}
+          copyright={data.copyright}
         />
       )}
 
-      {results.length > 0 && <Carousel items={results} />}
+      {results.length === 1 && (
+        <FactCard
+          title={results[0].title}
+          explanation={results[0].explanation}
+          image={results[0].image}
+          mediaType={results[0].mediaType}
+          date={results[0].date}
+          copyright={results[0].copyright}
+        />
+      )}
+
+      {results.length > 1 && <Carousel items={results} />}
 
       {!loading && hasSearched && results.length === 0 && !data && (
         <p className="empty-message">
@@ -74,9 +113,9 @@ const Home = () => {
 
       {!loading && !hasSearched && results.length === 0 && !data && (
         <div className="welcome-message">
-          🚀 Welcome to Space Explorer! Discover breathtaking NASA imagery,
-          explore distant galaxies, and uncover fascinating facts from across
-          the universe.
+          Welcome to Space Explorer! Discover breathtaking NASA imagery, explore
+          distant galaxies, and uncover fascinating facts from across the
+          universe.
         </div>
       )}
     </div>

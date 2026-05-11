@@ -1,22 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FactCard from "./FactCard";
 
 const Carousel = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  if (!items || items.length === 0) {
+  const itemCount = items?.length ?? 0;
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [itemCount]);
+
+  if (itemCount === 0) {
     return null;
   }
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === items.length - 1 ? 0 : prevIndex + 1,
+      prevIndex === itemCount - 1 ? 0 : prevIndex + 1,
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1,
+      prevIndex === 0 ? itemCount - 1 : prevIndex - 1,
     );
   };
 
@@ -33,17 +39,17 @@ const Carousel = ({ items }) => {
         copyright={currentItem.copyright}
       />
 
-      {items.length > 1 && (
+      {itemCount > 1 && (
         <div className="carousel-buttons">
-          <button onClick={prevSlide} className="carousel-btn">
+          <button type="button" onClick={prevSlide} className="carousel-btn">
             ⬅ Previous
           </button>
 
           <span className="carousel-counter">
-            {currentIndex + 1} / {items.length}
+            {currentIndex + 1} / {itemCount}
           </span>
 
-          <button onClick={nextSlide} className="carousel-btn">
+          <button type="button" onClick={nextSlide} className="carousel-btn">
             Next ➡
           </button>
         </div>

@@ -156,6 +156,14 @@ The API may return:
 
 ---
 
+## 🧩 Challenges / Troubleshooting
+
+- **NASA API key issues:** If results fail to load, confirm your `.env` contains `REACT_APP_NASA_API_KEY=...` and restart `npm start`.
+- **Search behavior:** Search uses NASA APOD `count` (random batch) and filters for *images only*, so results can vary per search and may not find rare terms every time.
+- **Testing:** Run `npm test -- --watchAll=false`. This project uses `react-router-dom@6` for compatibility with `react-scripts` (Create React App) testing.
+
+---
+
 ## 🧪 Future Improvements
 
 - 📅 Add date picker to select specific days
