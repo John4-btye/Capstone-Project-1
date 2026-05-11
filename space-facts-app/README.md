@@ -159,7 +159,7 @@ The API may return:
 ## 🧩 Challenges / Troubleshooting
 
 - **NASA API key issues:** If results fail to load, confirm your `.env` contains `REACT_APP_NASA_API_KEY=...` and restart `npm start`.
-- **Search behavior:** Search uses NASA APOD `count` (random batch) and filters for *images only*, so results can vary per search and may not find rare terms every time.
+- **Search behavior:** Search uses NASA APOD `count` (random batch) and filters for _images only_, so results can vary per search and may not find rare terms every time.
 - **Testing:** Run `npm test -- --watchAll=false`. This project uses `react-router-dom@6` for compatibility with `react-scripts` (Create React App) testing.
 
 ---
@@ -191,3 +191,11 @@ John Ownby
 - Possibly add a carousel design so that the user can pick and choose what they want to read
 - Potentially add a source/references section
 - Figure out if the API KEY I am already using has more information
+
+## Challenges When Designing App
+
+- My biggest challenges when making this app were:
+  - Getting the search bar to correctly filter through all data and return relevant results to the search. This sounds easy, however this task was difficult since the API key that I used had no search logic built into it and would randomly return data/information regardless of what was typed into the search bar.
+  - Getting the little alien in the flying saucer to constantly move across the screen without hindering the user experience. Getting the styling down for this in specific was a tall task.
+
+  - Another challenge I ran into while making this application was adding the background effects like the shooting stars and glowing particles. I ran into a similar problem with the alien, the original formatting kept overlapping into the picture of the space fact. So I had to ensure that these features stopped doing that and were only visible in the background and nowhere else.
